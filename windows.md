@@ -57,14 +57,16 @@
       clink info
       ```
 
-   3. 进入 `clink` 安装目录，创建 `oh-my-posh.lua` 文件，并编辑添加以下内容
+   3. 在 [oh-my-posh 主题](https://ohmyposh.dev/docs/themes) 可以预览并挑选喜欢的主题，挑好记住主题名字，后面需要使用
+
+   4. 进入 `clink` 安装目录，创建 `oh-my-posh.lua` 文件，并编辑添加以下内容
 
       ```lua
       load(io.popen('oh-my-posh --config="C:\\Users\\Yeechee\\AppData\\Local\\Programs\\oh-my-posh\\themes\\quick-term.omp.json" init cmd'):read("*a"))()
       ```
 
       > `config` 的值为 `oh-my-posh` 的安装位置，可以在 `系统` -> `高级设置` -> `环境变量` 中找到变量 `POSH_THEMES_PATH`  
-      > `quick-term.omp.json` 是选择的配色方案
+      > `quick-term` 是选择的配色方案，使用前面记住的主题名字替换
 
 4. 为 `powershell` / `pwsh` 配置
 
@@ -79,4 +81,3 @@
       ```PS1
       oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/quick-term.omp.json" | Invoke-Expression  
       ```
-
