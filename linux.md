@@ -3,8 +3,18 @@ apt install duf
 
 
 
+删除欢迎提示
 
 
+/etc/update-motd.d
+/etc/motd
+/etc/issue
+
+
+删除lastlogin消息
+touch ~/.hushlogin
+恢复lastlogin消息
+rm ~/.hushlogin
 
 
 
@@ -65,7 +75,7 @@ sudo ln -s /opt/nvim/bin/nvim /usr/bin/nvim
 
 
 
-nvimdots
+nvimdots/neovim
 
 sudo apt install git unzip make cmake gcc g++ clang zoxide ripgrep fd-find yarn lldb python3-pip  python3-venv
 # lazygit
@@ -79,3 +89,19 @@ nvm install 18
 nvm use 18
 # cargo/rustc required by sniprun and rustfmt
 curl https://sh.rustup.rs -sSf | sh
+
+
+
+fastfetch 
+repo地址
+https://github.com/fastfetch-cli/fastfetch/releases
+ssh登录启动
+sed -n 'w ~/.fastfetch' <<< 'fastfetch'
+sed -i '1isource ~/.fastfetch' ~/.zshrc
+
+or
+
+if [[ $- == *i* ]]; then
+    # 执行 ls 指令
+    fastfetch
+fi

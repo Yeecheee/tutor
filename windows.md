@@ -6,7 +6,7 @@
 
 ### 跳过联网登录
 
-1. 按 `shift` + `F12` 开启终端
+1. 按 `shift` + `F10` 开启终端
 2. 输入下面指令跳过联网登录
 
    ```Batch
@@ -81,3 +81,6 @@
       ```PS1
       oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/quick-term.omp.json" | Invoke-Expression  
       ```
+
+
+vscode
