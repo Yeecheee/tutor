@@ -1,24 +1,22 @@
 # Synology 设置和常用软件
 
-### 开启ssh
+### 开启 ssh
 
-开启root登录
+开启 root 登录
 vim /etc/ssh/sshd_config
 
 PermitRootLogin yes
 开启密钥登陆
-AuthorizedKeysFile      .ssh/authorized_keys
+AuthorizedKeysFile .ssh/authorized_keys
 PubkeyAuthentication yes
 
-输入下面命令修改root默认密码:synouser --setpw root xxxxxx 后面的xxxxx更换成你自己的密码。
-
-
+输入下面命令修改 root 默认密码:synouser --setpw root xxxxxx 后面的 xxxxx 更换成你自己的密码。
 
 ### Alist
 
 #### 创建容器
 
-``` YML
+```YML
 
 services:
   alist:
@@ -44,13 +42,13 @@ services:
 
 #### 隐藏 @eadir
 
-在alist下：进入【管理】--【设置】--【全局】，找到隐藏文件，在下面的框内增加以下现行内容
+在 alist 下：进入【管理】--【设置】--【全局】，找到隐藏文件，在下面的框内增加以下现行内容
 
 /\/@eaDir/i
 
 #### 自定义头部
 
-``` HTML
+```HTML
 <!--引入字体-->
 <link rel="stylesheet" href="https://npm.elemecdn.com/lxgw-wenkai-webfont@1.1.0/lxgwwenkai-regular.css" />
 <style>
@@ -61,10 +59,31 @@ body {font-family: LXGW WenKai;}
 </style>
 ```
 
+#### nginx 反向代理配置
+
+``` nginx
+server {
+    listen 5244 ssl;
+    server_name alist.example.com;
+
+    ssl_certificate /etc/nginx/ssl/1.crt;
+    ssl_certificate_key /etc/nginx/ssl/1.key;
+
+
+    location / {
+        proxy_pass http://127.0.0.1:5244;
+        proxy_set_header Host $http_host;
+        
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
 
 ### qBittorent
 
-``` YML
+```YML
 
 services:
   PT:
@@ -81,7 +100,7 @@ services:
     environment:
       - PUID=0
       - PGID=0
-      
+
       - TZ=Asia/Shanghai
       - WEBUI_PORT=80
       - TORRENTING_PORT=27321
@@ -100,7 +119,7 @@ services:
     environment:
       - PUID=0
       - PGID=0
-      
+
       - TZ=Asia/Shanghai
       - WEBUI_PORT=80
       - TORRENTING_PORT=27322
@@ -119,7 +138,7 @@ services:
     environment:
       - PUID=0
       - PGID=0
-      
+
       - TZ=Asia/Shanghai
       - WEBUI_PORT=80
       - TORRENTING_PORT=27323
@@ -158,13 +177,11 @@ networks:
 
 > PUID PGID 须为 0, 否则不能使用 80 端口, 不知道为什么
 
-
-
 ### MoviePilot
 
 #### 构建容器
 
-``` YML
+```YML
 
 # MoviePilot 地址：https://github.com/jxxghp/MoviePilot
 
@@ -215,7 +232,7 @@ services:
       - DEV=false
       # debug模式，开启后会输出debug日志
       - DEBUG=true
-      # 启动时自动检测和更新资源包（站点索引及认证等），true/false，默认true，需要能正常连接Github            
+      # 启动时自动检测和更新资源包（站点索引及认证等），true/false，默认true，需要能正常连接Github
       - AUTO_UPDATE_RESOURCE=true
       # TMDB API地址，默认api.themoviedb.org，也可配置为api.tmdb.org、tmdb.movie-pilot.org 或其它中转代理服务地址，能连通即可
       - TMDB_API_DOMAIN=api.themoviedb.org
@@ -244,13 +261,12 @@ services:
       # 插件市场仓库地址，仅支持Github仓库main分支，多个地址使用,分隔
       - PLUGIN_MARKET=https://github.com/jxxghp/MoviePilot-Plugins/,https://github.com/thsrite/MoviePilot-Plugins/,https://github.com/honue/MoviePilot-Plugins/,https://github.com/InfinityPacer/MoviePilot-Plugins/,https://github.com/dandkong/MoviePilot-Plugins/,https://github.com/Aqr-K/MoviePilot-Plugins/,https://github.com/AnjoyLi/MoviePilot-Plugins/,https://github.com/WithdewHua/MoviePilot-Plugins/,https://github.com/HankunYu/MoviePilot-Plugins/,https://github.com/baozaodetudou/MoviePilot-Plugins/,https://github.com/almus2zhang/MoviePilot-Plugins/,https://github.com/Pixel-LH/MoviePilot-Plugins/,https://github.com/lightolly/MoviePilot-Plugins/,https://github.com/suraxiuxiu/MoviePilot-Plugins/,https://github.com/gxterry/MoviePilot-Plugins/
 
-    
-```
 
+```
 
 ### Aria2 & AriaNg
 
-``` YML
+```YML
 services:
   Aria2-Pro:
     container_name: aria2-pro
@@ -278,4 +294,3 @@ services:
     ports:
       - "27110:6880"
 ```
-
