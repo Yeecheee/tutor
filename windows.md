@@ -4,6 +4,10 @@
 
 ## 系统设置
 
+### Window webdav
+
+https://www.lazychan.com/archives/kai-qi-windows-de-webdav-zhi-chi-bing-jie-jue-wu-fa-fang-wen
+
 ### 跳过联网登录
 
 1. 按 `shift` + `F10` 开启终端
@@ -59,6 +63,7 @@
    3. 重启计算机
 
 ---
+
 
 ## 常用软件
 
@@ -141,6 +146,8 @@
 ### embyToLocalPlayer
 
 ### FontCreator
+
+### Edge 多线程下载
 
 ### IDM
 

@@ -194,3 +194,6 @@ ssl_ciphers                 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_C
 ssl_prefer_server_ciphers   on;
 ```
 
+### open-vm-tools
+
+https://blog.csdn.net/lxyoucan/article/details/124280344
