@@ -67,6 +67,15 @@ https://www.lazychan.com/archives/kai-qi-windows-de-webdav-zhi-chi-bing-jie-jue-
 
 ## 常用软件
 
+
+
+### 关闭微软Edge浏览器的“使用推荐的浏览器设置”弹窗
+管理员运行
+
+``` SHELL
+reg add "HKLM\Software\Policies\Microsoft\Edge" /v "ShowRecommendationsEnabled" /t REG_DWORD /d "0" /f
+```
+
 ### clink
 
 1. 使用 `winget` 安装
