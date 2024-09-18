@@ -30,6 +30,8 @@ rm ~/.hushlogin
 apt install duf
 ```
 
+### htop -- 图形化 top 工具
+
 ### oh-my-zsh
 
 <p align="center">

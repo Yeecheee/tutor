@@ -91,7 +91,7 @@ services:
     # command: headscale serve
     command: serve
     ports:
-      - "AAAA:aaaa"
+      - "AAAA:8080"
 
     volumes:
       - ./hs/config:/etc/headscale/
@@ -102,7 +102,16 @@ services:
     image: ghcr.io/gurucomputing/headscale-ui:latest
     restart: unless-stopped
     ports:
-      - "BBBB:bbbb"
+      - "BBBB:80"
+
+  derper:
+    image: fredliang/derper
+    restart: unless-stopped
+    ports:
+      - 3478:3478/udp
+      - CCCC:443 # 443 是默认 derpport
+    environment:
+      - DERP_DOMAIN=derp.example.com
 ```
 
 #### headscale 配置文件
@@ -122,6 +131,81 @@ dns_config:
   override_local_dns: false             # 不要覆盖本地 DNS 服务
 randomize_client_port: true             # 使用随机端口
 ```
+
+derp.yml
+
+``` YML
+regions:
+  901:
+    regionid: 901
+    regioncode: aaa
+    regionname: bbb
+    nodes:
+      - name: 901a
+        regionid: 901
+        # 反代域名
+        hostname: derp.example.com
+        stunport: 3478
+        stunonly: false
+        # 反代端口
+        derpport: RP_PORT
+```
+
+反代配置
+
+``` nginx
+server {
+    listen RP_PORT ssl;
+
+    server_name hs.example.com;
+
+    ssl_certificate /etc/nginx/ssl/1.crt;
+    ssl_certificate_key /etc/nginx/ssl/1.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass http://LAN_IP:AAAA;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_redirect http:// https://;
+        proxy_buffering off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header Strict-Transport-Security "max-age=15552000; includeSubDomains" always;
+    }
+
+    location /web {
+        proxy_pass http://LAN_IP:BBBB;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+
+server {
+    listen RP_PORT ssl;
+    server_name derper.example.com;
+
+    ssl_certificate /etc/nginx/ssl/1.crt;
+    ssl_certificate_key /etc/nginx/ssl/1.key;
+
+    location / {
+        proxy_pass http://LAN_IP:CCCC;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+
+```
+
+
 
 ### vim
 
