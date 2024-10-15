@@ -37,3 +37,29 @@ services:
 然后在 `./hbbs` 文件夹下找到 `.pub` 文件,其中内容为连接时的 `key`
 ### subconverter
 enable_cache = false
+
+### Jellyfin
+
+``` yml
+services:
+  Jellyfin:
+    container_name: Jellyfin
+    image: nyanmisaka/jellyfin
+    restart: unless-stopped
+    privileged: true
+    ports:
+      - "xxxxx:8096"
+    volumes:
+      - ./config:/config
+      - ./cache:/cache
+      - ./custom:/custom
+      - /volume2/RSS:/RSS
+      - /volume3/Media:/Media
+
+    environment:
+      - UID=1000
+      - GID=1000
+    devices:
+      - /dev/dri:/dev/dri
+```
+
