@@ -199,3 +199,5 @@ ssl_prefer_server_ciphers   on;
 ### open-vm-tools
 
 https://blog.csdn.net/lxyoucan/article/details/124280344
+
+### lrzsz
